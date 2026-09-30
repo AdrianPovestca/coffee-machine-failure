@@ -5,7 +5,7 @@ html,body{margin:0;height:100%;background:#0d0906;color:var(--cream);font-family
 .vignette{position:fixed;inset:0;pointer-events:none;background:radial-gradient(ellipse at 50% 45%,transparent 45%,rgba(0,0,0,.55))}
 .top{position:fixed;top:26px;left:34px;right:34px;display:flex;justify-content:space-between;align-items:center;z-index:5;font:500 10px "DM Mono",monospace;letter-spacing:.14em}
 .brand,.pill{display:flex;align-items:center;gap:9px;color:rgba(245,234,217,.7)}
-.pill{padding:8px 13px;border-radius:99px;background:rgba(0,0,0,.3);border:1px solid rgba(255,255,255,.08);backdrop-filter:blur(8px)}
+.pill{padding:8px 13px;border-radius:99px;background:rgba(0,0,0,.3);border:1px solid rgba(255,255,255,.08)}
 .top i{width:6px;height:6px;border-radius:50%;background:#a8ff72;box-shadow:0 0 10px #a8ff72}
 .hero{position:fixed;left:6%;top:15%;z-index:5;max-width:380px;transition:opacity .6s}
 .hero.hide{opacity:0;pointer-events:none}
