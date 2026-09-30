@@ -1,349 +1,503 @@
-const scene = document.getElementById("scene");
-const makeCoffee = document.getElementById("makeCoffee");
+(() => {
+    const $ = (selector, root = document) => root.querySelector(selector);
 
-const statusText = document.getElementById("statusText");
-const machineDisplay = document.getElementById("machineDisplay");
-const heroMessage = document.getElementById("heroMessage");
+    const scene = $("#scene");
+    const makeCoffee = $("#makeCoffee");
 
-const failureMessage = document.getElementById("failureMessage");
-const screenFlash = document.getElementById("screenFlash");
-const flowerDelivery = document.getElementById("flowerDelivery");
+    const statusText = $("#statusText");
+    const machineDisplay = $("#machineDisplay");
+    const heroMessage = $("#heroMessage");
 
-const gaugeNeedle = document.getElementById("gaugeNeedle");
-const espressoMachine = document.getElementById("espressoMachine");
-const glassCup = document.getElementById("glassCup");
-const glassShards = document.getElementById("glassShards");
-const coffeeExplosion = document.getElementById("coffeeExplosion");
-const barista = document.getElementById("barista");
+    const failureMessage = $("#failureMessage");
+    const screenFlash = $("#screenFlash");
+    const flowerDelivery = $("#flowerDelivery");
 
-let running = false;
-let timers = [];
+    const gaugeNeedle = $("#gaugeNeedle");
+    const coffeeLiquid = $(".coffee-liquid");
+    const crema = $(".crema");
 
-function later(callback, delay) {
-    const timer = setTimeout(callback, delay);
-    timers.push(timer);
-    return timer;
-}
+    if (!scene || !makeCoffee) return;
 
-function clearTimers() {
-    timers.forEach(clearTimeout);
-    timers = [];
-}
+    let running = false;
+    let timers = [];
 
-function restartAnimation(element) {
-    if (!element) return;
+    /* ---------------------------------------------
+       TIMER SYSTEM
+    --------------------------------------------- */
 
-    element.classList.remove("animate");
-
-    void element.offsetWidth;
-
-    element.classList.add("animate");
-}
-
-function resetAnimationClasses() {
-    scene.classList.remove(
-        "brewing",
-        "impact",
-        "shattered",
-        "failed",
-        "running",
-        "flowers"
-    );
-
-    failureMessage.classList.remove("show");
-    flowerDelivery.classList.remove("show");
-
-    if (screenFlash) {
-        screenFlash.classList.remove("flash");
+    function later(callback, delay) {
+        const timer = setTimeout(callback, delay);
+        timers.push(timer);
+        return timer;
     }
 
-    if (glassShards) {
-        glassShards.classList.remove("animate");
+    function clearTimers() {
+        timers.forEach(clearTimeout);
+        timers = [];
     }
 
-    if (coffeeExplosion) {
-        coffeeExplosion.classList.remove("animate");
+    /* ---------------------------------------------
+       SAFE TEXT
+    --------------------------------------------- */
+
+    function setText(element, text) {
+        if (element) {
+            element.textContent = text;
+        }
     }
 
-    if (glassCup) {
-        glassCup.classList.remove("animate");
+    /* ---------------------------------------------
+       RESTART CSS ANIMATION
+    --------------------------------------------- */
+
+    function replayAnimation(element) {
+        if (!element) return;
+
+        element.style.animation = "none";
+
+        void element.offsetWidth;
+
+        element.style.animation = "";
     }
 
-    if (espressoMachine) {
-        espressoMachine.classList.remove("animate");
+    /* ---------------------------------------------
+       RESET COFFEE
+    --------------------------------------------- */
+
+    function resetCoffee() {
+        if (!coffeeLiquid) return;
+
+        coffeeLiquid.style.animation = "none";
+        coffeeLiquid.style.transform = "scaleY(0)";
+
+        void coffeeLiquid.offsetWidth;
+
+        coffeeLiquid.style.animation = "";
     }
 
-    if (barista) {
-        barista.classList.remove("animate");
-    }
-}
+    /* ---------------------------------------------
+       RESET EVERYTHING
+    --------------------------------------------- */
 
-function resetScene() {
-    clearTimers();
+    function resetScene() {
+        clearTimers();
 
-    resetAnimationClasses();
+        running = false;
 
-    running = false;
+        scene.classList.remove(
+            "brewing",
+            "impact",
+            "shattered",
+            "failed",
+            "running",
+            "flowers"
+        );
 
-    statusText.textContent = "SYSTEM READY";
-    machineDisplay.textContent = "READY";
+        if (failureMessage) {
+            failureMessage.classList.remove("show");
+        }
 
-    heroMessage.textContent =
-        "One perfectly normal espresso.";
-
-    gaugeNeedle.style.transform = "rotate(-40deg)";
-
-    makeCoffee.disabled = false;
-    makeCoffee.style.opacity = "1";
-    makeCoffee.style.pointerEvents = "auto";
-}
-
-/* =========================================================
-   MAIN COFFEE SEQUENCE
-========================================================= */
-
-function startSequence() {
-    if (running) return;
-
-    running = true;
-
-    clearTimers();
-    resetAnimationClasses();
-
-    makeCoffee.disabled = true;
-    makeCoffee.style.opacity = "0.65";
-    makeCoffee.style.pointerEvents = "none";
-
-    /*
-        0.00
-        START
-    */
-
-    statusText.textContent = "PULLING SHOTS";
-    machineDisplay.textContent = "BREWING";
-
-    heroMessage.textContent =
-        "Please wait...";
-
-    scene.classList.add("brewing");
-
-    restartAnimation(espressoMachine);
-
-    /*
-        0.20
-        MACHINE STARTS SHAKING
-    */
-
-    later(() => {
-        machineDisplay.textContent = "PRESSURE";
-
-        gaugeNeedle.style.transform =
-            "rotate(5deg)";
-    }, 200);
-
-    /*
-        0.70
-        FIRST EXTRACTION
-    */
-
-    later(() => {
-        statusText.textContent =
-            "EXTRACTION";
-
-        machineDisplay.textContent =
-            "PULLING SHOT";
-
-        gaugeNeedle.style.transform =
-            "rotate(22deg)";
-    }, 700);
-
-    /*
-        1.45
-        SECOND SHOT
-    */
-
-    later(() => {
-        statusText.textContent =
-            "ESPRESSO";
-
-        gaugeNeedle.style.transform =
-            "rotate(31deg)";
-    }, 1450);
-
-    /*
-        2.45
-        SOMETHING IS GOING WRONG
-    */
-
-    later(() => {
-        statusText.textContent =
-            "PRESSURE ERROR";
-
-        machineDisplay.textContent =
-            "UNSTABLE";
-
-        heroMessage.textContent =
-            "Something feels... wrong.";
-
-        scene.classList.add("impact");
-
-        gaugeNeedle.style.transform =
-            "rotate(48deg)";
-    }, 2450);
-
-    /*
-        2.82
-        IMPACT / GLASS STARTS BREAKING
-    */
-
-    later(() => {
-        scene.classList.remove("brewing");
-
-        scene.classList.add("shattered");
-
-        statusText.textContent =
-            "SYSTEM FAILURE";
-
-        machineDisplay.textContent =
-            "ERROR";
-
-        heroMessage.textContent =
-            "That was not supposed to happen.";
-
-        restartAnimation(glassCup);
-        restartAnimation(glassShards);
-        restartAnimation(coffeeExplosion);
+        if (flowerDelivery) {
+            flowerDelivery.classList.remove("show");
+        }
 
         if (screenFlash) {
             screenFlash.classList.remove("flash");
-
-            void screenFlash.offsetWidth;
-
-            screenFlash.classList.add("flash");
         }
-    }, 2820);
 
-    /*
-        3.08
-        BARISTA REALIZES WHAT HAPPENED
-    */
+        resetCoffee();
 
-    later(() => {
-        scene.classList.remove("impact");
+        if (crema) {
+            crema.style.opacity = "0";
+        }
 
-        scene.classList.add("failed");
+        if (gaugeNeedle) {
+            gaugeNeedle.style.transform = "rotate(-40deg)";
+        }
 
-        failureMessage.classList.add("show");
-
-        statusText.textContent =
-            "BARISTA PANIC";
-
-        machineDisplay.textContent =
-            "NO COFFEE";
-    }, 3080);
-
-    /*
-        3.72
-        BARISTA RUNS AWAY
-    */
-
-    later(() => {
-        failureMessage.classList.remove("show");
-
-        scene.classList.add("running");
-
-        statusText.textContent =
-            "ALTERNATIVE SOLUTION";
-    }, 3720);
-
-    /*
-        4.18
-        FLOWERS ENTER THE SCREEN
-    */
-
-    later(() => {
-        scene.classList.add("flowers");
-
-        flowerDelivery.classList.add("show");
-
-        statusText.textContent =
-            "DELIVERY COMPLETE";
-
-        machineDisplay.textContent =
-            "FLOWERS";
-    }, 4180);
-
-    /*
-        4.85
-        FINAL MESSAGE
-    */
-
-    later(() => {
-        heroMessage.textContent =
-            "Coffee failed. Flowers didn't.";
-
-    }, 4850);
-
-    /*
-        5.30
-        USER CAN RUN IT AGAIN
-    */
-
-    later(() => {
-        running = false;
+        setText(statusText, "SYSTEM READY");
+        setText(machineDisplay, "READY");
+        setText(
+            heroMessage,
+            "One perfectly normal espresso."
+        );
 
         makeCoffee.disabled = false;
         makeCoffee.style.opacity = "1";
         makeCoffee.style.pointerEvents = "auto";
-
-        statusText.textContent =
-            "SYSTEM READY";
-    }, 5300);
-}
-
-/* =========================================================
-   BUTTON
-========================================================= */
-
-makeCoffee.addEventListener(
-    "click",
-    startSequence
-);
-
-/* =========================================================
-   KEYBOARD
-========================================================= */
-
-document.addEventListener(
-    "keydown",
-    (event) => {
-
-        if (
-            event.key === "Enter" &&
-            !running
-        ) {
-            startSequence();
-        }
-
-        if (
-            event.key.toLowerCase() === "r"
-        ) {
-            resetScene();
-        }
     }
-);
 
-/* =========================================================
-   DOUBLE CLICK = RESET
-========================================================= */
+    /* ---------------------------------------------
+       MAIN 5.6 SECOND CINEMATIC SEQUENCE
+    --------------------------------------------- */
 
-scene.addEventListener(
-    "dblclick",
-    resetScene
-);
+    function startSequence() {
 
-/* =========================================================
-   INITIAL STATE
-========================================================= */
+        if (running) return;
 
-resetScene();
+        running = true;
+
+        clearTimers();
+
+        /* clean previous state */
+
+        scene.classList.remove(
+            "impact",
+            "shattered",
+            "failed",
+            "running",
+            "flowers"
+        );
+
+        if (failureMessage) {
+            failureMessage.classList.remove("show");
+        }
+
+        if (flowerDelivery) {
+            flowerDelivery.classList.remove("show");
+        }
+
+        if (screenFlash) {
+            screenFlash.classList.remove("flash");
+        }
+
+        /*
+            IMPORTANT:
+            Glass starts completely empty.
+        */
+
+        resetCoffee();
+
+        if (crema) {
+            crema.style.opacity = "0";
+        }
+
+        /* Disable button during cinematic */
+
+        makeCoffee.disabled = true;
+        makeCoffee.style.opacity = "0.55";
+        makeCoffee.style.pointerEvents = "none";
+
+        /* -----------------------------------------
+           0.00
+           MACHINE START
+        ----------------------------------------- */
+
+        setText(statusText, "PULLING SHOTS");
+        setText(machineDisplay, "BREWING");
+        setText(heroMessage, "Please wait...");
+
+        scene.classList.add("brewing");
+
+        /* -----------------------------------------
+           0.28
+           PRESSURE STARTS
+        ----------------------------------------- */
+
+        later(() => {
+
+            setText(machineDisplay, "PRESSURE");
+
+            if (gaugeNeedle) {
+                gaugeNeedle.style.transform =
+                    "rotate(5deg)";
+            }
+
+        }, 280);
+
+        /* -----------------------------------------
+           0.72
+           EXTRACTION
+        ----------------------------------------- */
+
+        later(() => {
+
+            setText(statusText, "EXTRACTION");
+            setText(machineDisplay, "PULLING SHOT");
+
+            if (gaugeNeedle) {
+                gaugeNeedle.style.transform =
+                    "rotate(21deg)";
+            }
+
+        }, 720);
+
+        /* -----------------------------------------
+           1.12
+           CREMA APPEARS
+        ----------------------------------------- */
+
+        later(() => {
+
+            if (crema) {
+                crema.style.opacity = "0.9";
+            }
+
+            setText(statusText, "ESPRESSO");
+
+        }, 1120);
+
+        /* -----------------------------------------
+           1.65
+           PRESSURE RISING
+        ----------------------------------------- */
+
+        later(() => {
+
+            if (gaugeNeedle) {
+                gaugeNeedle.style.transform =
+                    "rotate(31deg)";
+            }
+
+        }, 1650);
+
+        /* -----------------------------------------
+           2.28
+           PRESSURE FAILURE
+        ----------------------------------------- */
+
+        later(() => {
+
+            setText(statusText, "PRESSURE ERROR");
+
+            setText(
+                machineDisplay,
+                "UNSTABLE"
+            );
+
+            setText(
+                heroMessage,
+                "Something feels... wrong."
+            );
+
+            scene.classList.add("impact");
+
+            if (gaugeNeedle) {
+                gaugeNeedle.style.transform =
+                    "rotate(48deg)";
+            }
+
+        }, 2280);
+
+        /* -----------------------------------------
+           2.66
+           GLASS BREAKS
+        ----------------------------------------- */
+
+        later(() => {
+
+            scene.classList.remove(
+                "brewing",
+                "impact"
+            );
+
+            scene.classList.add("shattered");
+
+            setText(
+                statusText,
+                "SYSTEM FAILURE"
+            );
+
+            setText(
+                machineDisplay,
+                "ERROR"
+            );
+
+            setText(
+                heroMessage,
+                "That was not supposed to happen."
+            );
+
+            /* Restart glass animation */
+
+            replayAnimation(
+                $("#glassCup")
+            );
+
+            replayAnimation(
+                $("#glassShards")
+            );
+
+            replayAnimation(
+                $("#coffeeExplosion")
+            );
+
+            /* Camera / screen flash */
+
+            if (screenFlash) {
+
+                screenFlash.classList.remove(
+                    "flash"
+                );
+
+                void screenFlash.offsetWidth;
+
+                screenFlash.classList.add(
+                    "flash"
+                );
+            }
+
+        }, 2660);
+
+        /* -----------------------------------------
+           3.01
+           BARISTA PANICS
+        ----------------------------------------- */
+
+        later(() => {
+
+            scene.classList.add("failed");
+
+            if (failureMessage) {
+                failureMessage.classList.add(
+                    "show"
+                );
+            }
+
+            setText(
+                statusText,
+                "BARISTA PANIC"
+            );
+
+            setText(
+                machineDisplay,
+                "NO COFFEE"
+            );
+
+        }, 3010);
+
+        /* -----------------------------------------
+           3.49
+           BARISTA RUNS
+        ----------------------------------------- */
+
+        later(() => {
+
+            if (failureMessage) {
+                failureMessage.classList.remove(
+                    "show"
+                );
+            }
+
+            scene.classList.add("running");
+
+            setText(
+                statusText,
+                "ALTERNATIVE SOLUTION"
+            );
+
+        }, 3490);
+
+        /* -----------------------------------------
+           3.97
+           FLOWERS ENTER
+        ----------------------------------------- */
+
+        later(() => {
+
+            scene.classList.add("flowers");
+
+            if (flowerDelivery) {
+                flowerDelivery.classList.add(
+                    "show"
+                );
+            }
+
+            setText(
+                statusText,
+                "DELIVERY COMPLETE"
+            );
+
+            setText(
+                machineDisplay,
+                "FLOWERS"
+            );
+
+        }, 3970);
+
+        /* -----------------------------------------
+           4.74
+           FINAL MESSAGE
+        ----------------------------------------- */
+
+        later(() => {
+
+            setText(
+                heroMessage,
+                "Coffee failed. Flowers didn't."
+            );
+
+        }, 4740);
+
+        /* -----------------------------------------
+           5.60
+           READY AGAIN
+        ----------------------------------------- */
+
+        later(() => {
+
+            running = false;
+
+            makeCoffee.disabled = false;
+            makeCoffee.style.opacity = "1";
+            makeCoffee.style.pointerEvents = "auto";
+
+            setText(
+                statusText,
+                "SYSTEM READY"
+            );
+
+        }, 5600);
+    }
+
+    /* ---------------------------------------------
+       BUTTON
+    --------------------------------------------- */
+
+    makeCoffee.addEventListener(
+        "click",
+        startSequence
+    );
+
+    /* ---------------------------------------------
+       KEYBOARD
+       ENTER = PLAY
+       R = RESET
+    --------------------------------------------- */
+
+    document.addEventListener(
+        "keydown",
+        event => {
+
+            if (
+                event.key === "Enter" &&
+                !running
+            ) {
+                startSequence();
+            }
+
+            if (
+                event.key.toLowerCase() === "r"
+            ) {
+                resetScene();
+            }
+
+        }
+    );
+
+    /* ---------------------------------------------
+       DOUBLE CLICK = RESET
+    --------------------------------------------- */
+
+    scene.addEventListener(
+        "dblclick",
+        resetScene
+    );
+
+    /* ---------------------------------------------
+       INITIAL STATE
+    --------------------------------------------- */
+
+    resetScene();
+
+})();
