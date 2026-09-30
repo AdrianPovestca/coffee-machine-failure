@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    />
+
+    <title>Coffee Machine</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Inter:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet"
+    >
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <main class="scene" id="scene">
+
+        <!-- Background -->
+        <div class="ambient ambient-one"></div>
+        <div class="ambient ambient-two"></div>
+
+        <!-- Cafe background -->
+        <div class="back-wall">
+
+            <div class="wall-light"></div>
+
+            <div class="shelf">
+                <div class="shelf-board"></div>
+
+                <div class="shelf-cup cup-one"></div>
+                <div class="shelf-cup cup-two"></div>
+                <div class="shelf-cup cup-three"></div>
+
+                <div class="plant">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </div>
+
+            <div class="menu-board">
+                <span>COFFEE</span>
+                <small>espresso · milk · chaos</small>
+            </div>
+
+        </div>
+
+        <!-- Counter -->
+        <div class="counter">
+
+            <div class="counter-top"></div>
+
+            <div class="machine-area">
+
+                <!-- Espresso machine -->
+                <section class="espresso-machine">
+
+                    <div class="machine-top">
+                        <div class="machine-logo">AP</div>
+
+                        <div class="machine-display">
+                            <span class="display-light"></span>
+                            <span id="machineStatus">READY</span>
+                        </div>
+                    </div>
+
+                    <div class="machine-body">
+
+                        <div class="machine-panel">
+
+                            <div class="button-row">
+                                <button class="machine-button"></button>
+                                <button class="machine-button active"></button>
+                                <button class="machine-button"></button>
+                            </div>
+
+                            <div class="pressure">
+                                <div class="gauge">
+                                    <div class="gauge-needle"></div>
+                                    <span>BAR</span>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="group-head">
+
+                            <div class="group-handle"></div>
+
+                            <div class="group-head-metal">
+                                <div class="group-screen"></div>
+                            </div>
+
+                            <div class="spout spout-left"></div>
+                            <div class="spout spout-right"></div>
+
+                        </div>
+
+                        <!-- Espresso streams -->
+                        <div class="espresso-stream stream-left"></div>
+                        <div class="espresso-stream stream-right"></div>
+
+                    </div>
+
+                    <div class="machine-base"></div>
+
+                </section>
+
+                <!-- Cup -->
+                <div class="cup-zone">
+
+                    <div class="cup" id="cup">
+
+                        <div class="cup-top">
+                            <div class="coffee-surface" id="coffeeSurface"></div>
+                        </div>
+
+                        <div class="cup-body">
+                            <div class="cup-logo">AP</div>
+                        </div>
+
+                        <div class="cup-shadow"></div>
+
+                    </div>
+
+                    <!-- Coffee splash -->
+                    <div class="coffee-splash" id="coffeeSplash">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </div>
+
+                </div>
+
+                <!-- Barista -->
+                <div class="barista" id="barista">
+
+                    <div class="barista-body">
+
+                        <div class="shirt">
+                            <div class="apron"></div>
+                        </div>
+
+                    </div>
+
+                    <div class="barista-head">
+
+                        <div class="hair"></div>
+
+                        <div class="face">
+
+                            <div class="ear left"></div>
+                            <div class="ear right"></div>
+
+                            <div class="eye left"></div>
+                            <div class="eye right"></div>
+
+                            <div class="nose"></div>
+
+                            <div class="mouth"></div>
+
+                        </div>
+
+                    </div>
+
+                    <!-- Arms -->
+                    <div class="arm arm-left"></div>
+                    <div class="arm arm-right"></div>
+
+                    <!-- Hands -->
+                    <div class="hand hand-left"></div>
+                    <div class="hand hand-right"></div>
+
+                </div>
+
+                <!-- Flowers -->
+                <div class="flower-delivery" id="flowerDelivery">
+
+                    <div class="bouquet">
+
+                        <div class="flower flower-a">
+                            <span class="petal p1"></span>
+                            <span class="petal p2"></span>
+                            <span class="petal p3"></span>
+                            <span class="petal p4"></span>
+                            <span class="flower-center"></span>
+                        </div>
+
+                        <div class="flower flower-b">
+                            <span class="petal p1"></span>
+                            <span class="petal p2"></span>
+                            <span class="petal p3"></span>
+                            <span class="petal p4"></span>
+                            <span class="flower-center"></span>
+                        </div>
+
+                        <div class="flower flower-c">
+                            <span class="petal p1"></span>
+                            <span class="petal p2"></span>
+                            <span class="petal p3"></span>
+                            <span class="petal p4"></span>
+                            <span class="flower-center"></span>
+                        </div>
+
+                        <div class="flower flower-d">
+                            <span class="petal p1"></span>
+                            <span class="petal p2"></span>
+                            <span class="petal p3"></span>
+                            <span class="petal p4"></span>
+                            <span class="flower-center"></span>
+                        </div>
+
+                        <div class="bouquet-paper"></div>
+
+                    </div>
+
+                    <div class="flower-message">
+                        THIS IS FOR YOU
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- Counter front -->
+            <div class="counter-front"></div>
+
+        </div>
+
+        <!-- Top UI -->
+        <header class="top-ui">
+
+            <div class="brand">
+                <span class="brand-dot"></span>
+                COFFEE MACHINE
+            </div>
+
+            <div class="status-pill">
+                <span></span>
+                <strong id="statusText">SYSTEM READY</strong>
+            </div>
+
+        </header>
+
+        <!-- Main UI -->
+        <section class="hero-ui">
+
+            <div class="eyebrow">
+                SMALL CAFE · BIG PROBLEM
+            </div>
+
+            <h1>
+                Make your<br>
+                coffee.
+            </h1>
+
+            <p id="instruction">
+                One perfectly normal espresso.
+            </p>
+
+            <button id="makeCoffee" class="make-button">
+
+                <span class="button-icon">☕</span>
+
+                <span>
+                    MAKE COFFEE
+                </span>
+
+                <span class="button-arrow">→</span>
+
+            </button>
+
+        </section>
+
+        <!-- Failure -->
+        <div class="failure-message" id="failureMessage">
+
+            <div class="failure-tag">
+                MACHINE ERROR
+            </div>
+
+            <h2>
+                Coffee machine<br>
+                failed.
+            </h2>
+
+            <p>
+                Please accept these flowers instead.
+            </p>
+
+        </div>
+
+        <!-- Screen flash -->
+        <div class="screen-flash" id="screenFlash"></div>
+
+    </main>
+
+    <script src="script.js"></script>
+
+</body>
+</html>
