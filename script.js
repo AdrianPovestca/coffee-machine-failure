@@ -1,5 +1,4 @@
 import * as THREE from 'three';
-import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
 
 const $ = s => document.querySelector(s);
 const clamp = (x, a = 0, b = 1) => Math.min(b, Math.max(a, x));
@@ -18,7 +17,10 @@ renderer.toneMappingExposure = 1.15;
 const scene = new THREE.Scene();
 scene.background = new THREE.Color(0x0d0906);
 scene.fog = new THREE.Fog(0x0d0906, 10, 22);
-scene.environment = new THREE.PMREMGenerator(renderer).fromScene(new RoomEnvironment(), 0.04).texture;
+try {
+  const { RoomEnvironment } = await import('three/addons/environments/RoomEnvironment.js');
+  scene.environment = new THREE.PMREMGenerator(renderer).fromScene(new RoomEnvironment(), 0.04).texture;
+} catch (e) { console.warn('Environment map not loaded', e); scene.environmentIntensity = 0; }
 scene.environmentIntensity = 0.35;
 const cam = new THREE.PerspectiveCamera(32, 1, 0.1, 60);
 
@@ -224,6 +226,7 @@ const lookAt = V(0, 0, 0);
 
 function frame(now) {
   requestAnimationFrame(frame);
+  window.__ok = true;
   const dt = Math.min((now - last) / 1000, 0.05); last = now;
   const go = t0 !== null, t = go ? (now - t0) / 1000 : -1;
   const sec = now / 1000;
