@@ -66,8 +66,23 @@ const wall = new THREE.Mesh(new THREE.PlaneGeometry(34, 12), M(0xffffff, 0.8, 0,
 wall.position.set(0, 3, -2.7); wall.receiveShadow = true; scene.add(wall);
 const floor = new THREE.Mesh(new THREE.PlaneGeometry(40, 40), M(0x120c08, 0.35, 0.1));
 floor.rotation.x = -Math.PI / 2; floor.position.y = -1.9; floor.receiveShadow = true; scene.add(floor);
-mesh(scene, box(16, 1.9, 3.2), M(0xffffff, 0.6, 0, { map: woodTex(20, [2, 1]) }), 0, -0.95, 0);
-mesh(scene, box(16, 0.08, 3.3), new THREE.MeshPhysicalMaterial({ color: 0x2a1c14, roughness: 0.22, clearcoat: 0.7, clearcoatRoughness: 0.15 }), 0, -0.04, 0);
+mesh(scene, box(16, 1.82, 3.2), M(0xffffff, 0.6, 0, { map: woodTex(20, [2, 1]) }), 0, -0.99, 0);
+const tableTex = tex(2048, 512, (g, w, h) => {
+  const n = 6, ph = h / n;
+  for (let i = 0; i < n; i++) {
+    const y0 = i * ph;
+    g.fillStyle = `hsl(${22 + Math.random() * 6},${38 + Math.random() * 10}%,${17 + Math.random() * 7}%)`;
+    g.fillRect(0, y0, w, ph);
+    for (let k = 0; k < 90; k++) {
+      g.strokeStyle = `rgba(${Math.random() < 0.5 ? '0,0,0' : '255,190,120'},${Math.random() * 0.07})`;
+      g.lineWidth = 1 + Math.random() * 2;
+      const y = y0 + Math.random() * ph; g.beginPath(); g.moveTo(0, y);
+      g.bezierCurveTo(w * 0.3, y + rnd(-6, 6), w * 0.7, y + rnd(-6, 6), w, y + rnd(-3, 3)); g.stroke();
+    }
+    g.fillStyle = 'rgba(0,0,0,.6)'; g.fillRect(0, y0, w, 3);
+  }
+});
+mesh(scene, box(16, 0.08, 3.3), new THREE.MeshPhysicalMaterial({ map: tableTex, color: 0xffffff, roughness: 0.38, clearcoat: 0.35, clearcoatRoughness: 0.25 }), 0, -0.04, 0);
 mesh(scene, box(16, 0.05, 0.05), M(0xffa050, 0.5, 0, { emissive: 0xff9040, emissiveIntensity: 3 }), 0, -1.75, 1.62);
 mesh(scene, box(9, 0.1, 0.5), M(0x4a3020, 0.5), 1.2, 2.6, -2.4);
 [[-1.6, .32], [-1.2, .26], [3.8, .3], [1.8, .28]].forEach(([x, h]) => mesh(scene, cyl(0.16, 0.12, h), M(0xd8cbb4, 0.35), x, 2.65 + h / 2, -2.4));
@@ -84,7 +99,7 @@ for (let i = 0; i < 6; i++) { const l = mesh(plant, sph(0.1), M(0x4f6b3a, 0.6), 
 /* ---------- lights ---------- */
 const key = new THREE.SpotLight(0xffd7a8, 480, 0, 0.55, 0.7, 2);
 key.position.set(3.5, 7, 6.5); key.target.position.set(-0.8, 0.3, 0); key.castShadow = true;
-key.shadow.mapSize.set(1024, 1024); key.shadow.bias = -0.0002; key.shadow.normalBias = 0.02; key.shadow.camera.near = 3; key.shadow.camera.far = 30;
+key.shadow.mapSize.set(1024, 1024); key.shadow.bias = -0.0005; key.shadow.normalBias = 0.04; key.shadow.camera.near = 3; key.shadow.camera.far = 30;
 scene.add(key, key.target);
 const rim = new THREE.SpotLight(0xffa868, 260, 0, 0.7, 0.8, 2); rim.position.set(-6, 5, -3); rim.target.position.set(-1, 1, 0); scene.add(rim, rim.target);
 scene.add(new THREE.HemisphereLight(0xffe2c0, 0x1a0f08, 0.25));
