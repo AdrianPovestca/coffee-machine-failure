@@ -7,7 +7,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Inter:wght@500;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="style.css?v=3">
 <script type="importmap">
 {"imports":{
   "three":"https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js",
@@ -35,6 +35,20 @@
 <div id="foryou">THIS IS FOR YOU</div>
 <div id="flash"></div>
 
-<script type="module" src="script.js"></script>
+<div id="diag" style="display:none;position:fixed;left:16px;right:16px;bottom:16px;z-index:99;padding:12px 14px;background:#4a0d0d;color:#fff;font:12px/1.5 monospace;border-radius:8px;white-space:pre-wrap"></div>
+<script>
+(function () {
+  var d = document.getElementById('diag');
+  function show(m) { d.style.display = 'block'; d.textContent += m + '\n'; }
+  addEventListener('error', function (e) {
+    show('Eroare: ' + (e.message || ('nu s-a putut incarca ' + (e.target && (e.target.src || e.target.href)))));
+  }, true);
+  addEventListener('unhandledrejection', function (e) { show('Eroare: ' + e.reason); });
+  setTimeout(function () {
+    if (!window.__ok) show('Scena 3D nu a pornit. Verifica ca script.js este versiunea noua, apoi Cmd+Shift+R.');
+  }, 3500);
+})();
+</script>
+<script type="module" src="script.js?v=3"></script>
 </body>
 </html>
