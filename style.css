@@ -39,6 +39,7 @@ button {
     min-height: 100vh;
     min-height: 100svh;
     overflow: hidden;
+
     background:
         radial-gradient(
             circle at 50% 30%,
@@ -53,9 +54,10 @@ button {
         );
 }
 
-/* -------------------------------------------------- */
-/* Ambient */
-/* -------------------------------------------------- */
+
+/* ==================================================
+   AMBIENT
+================================================== */
 
 .ambient {
     position: absolute;
@@ -80,9 +82,10 @@ button {
     top: 5%;
 }
 
-/* -------------------------------------------------- */
-/* Back wall */
-/* -------------------------------------------------- */
+
+/* ==================================================
+   BACK WALL
+================================================== */
 
 .back-wall {
     position: absolute;
@@ -97,6 +100,8 @@ button {
             rgba(0, 0, 0, 0.22)
         ),
         #241c15;
+
+    z-index: 0;
 }
 
 .wall-light {
@@ -127,7 +132,9 @@ button {
     height: 8px;
     border-radius: 10px;
     background: #38271b;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+
+    box-shadow:
+        0 10px 30px rgba(0, 0, 0, 0.3);
 }
 
 .shelf-cup {
@@ -137,7 +144,9 @@ button {
     height: 42px;
     border-radius: 6px 6px 13px 13px;
     background: #c5b8a4;
-    box-shadow: inset 0 8px 0 rgba(255, 255, 255, 0.08);
+
+    box-shadow:
+        inset 0 8px 0 rgba(255, 255, 255, 0.08);
 }
 
 .cup-one {
@@ -202,14 +211,21 @@ button {
     position: absolute;
     right: 7%;
     top: 32%;
+
     display: flex;
     flex-direction: column;
     gap: 5px;
+
     padding: 18px 22px;
+
     border: 1px solid rgba(255,255,255,0.08);
+
     background: rgba(0,0,0,0.15);
+
     backdrop-filter: blur(10px);
+
     border-radius: 8px;
+
     transform: rotate(2deg);
 }
 
@@ -225,17 +241,21 @@ button {
     letter-spacing: 0.08em;
 }
 
-/* -------------------------------------------------- */
-/* Counter */
-/* -------------------------------------------------- */
+
+/* ==================================================
+   COUNTER
+================================================== */
 
 .counter {
     position: absolute;
     left: 0;
     right: 0;
     bottom: 0;
+
     height: 45%;
     min-height: 320px;
+
+    z-index: 5;
 }
 
 .counter-top {
@@ -243,24 +263,66 @@ button {
     top: 0;
     left: 0;
     right: 0;
+
     height: 28px;
+
+    z-index: 20;
+
     background:
         linear-gradient(
             180deg,
             #5a4230,
             #3a291d
         );
+
     box-shadow:
         0 -10px 35px rgba(0,0,0,0.35),
         0 12px 30px rgba(0,0,0,0.35);
 }
 
+
+/* ==================================================
+   MACHINE AREA
+
+   IMPORTANT:
+   This is above the counter front.
+================================================== */
+
+.machine-area {
+    position: absolute;
+
+    left: 50%;
+    top: -125px;
+
+    width: min(950px, 92vw);
+    height: 360px;
+
+    transform: translateX(-50%);
+
+    z-index: 30;
+
+    pointer-events: none;
+}
+
+
+/* ==================================================
+   COUNTER FRONT
+
+   IMPORTANT:
+   It stays BELOW machine-area.
+================================================== */
+
 .counter-front {
     position: absolute;
+
     left: 0;
     right: 0;
+
     top: 28px;
     bottom: 0;
+
+    z-index: 10;
+
     background:
         linear-gradient(
             90deg,
@@ -272,26 +334,23 @@ button {
         #211914;
 }
 
-.machine-area {
-    position: absolute;
-    left: 50%;
-    top: -125px;
-    width: min(950px, 92vw);
-    height: 360px;
-    transform: translateX(-50%);
-}
 
-/* -------------------------------------------------- */
-/* Espresso machine */
-/* -------------------------------------------------- */
+/* ==================================================
+   ESPRESSO MACHINE
+================================================== */
 
 .espresso-machine {
     position: absolute;
+
     left: 7%;
     bottom: 55px;
+
     width: 430px;
     height: 240px;
-    z-index: 5;
+
+    z-index: 40;
+
+    pointer-events: auto;
 }
 
 .machine-top {
@@ -299,14 +358,18 @@ button {
     top: 0;
     left: 15px;
     right: 15px;
+
     height: 48px;
+
     border-radius: 18px 18px 6px 6px;
+
     background:
         linear-gradient(
             180deg,
             #454545,
             #272727
         );
+
     border: 1px solid rgba(255,255,255,0.08);
 }
 
@@ -314,46 +377,63 @@ button {
     position: absolute;
     left: 20px;
     top: 15px;
+
     font-family: "DM Mono", monospace;
     font-size: 11px;
     letter-spacing: 0.2em;
+
     color: rgba(255,255,255,0.5);
 }
 
 .machine-display {
     position: absolute;
+
     right: 20px;
     top: 13px;
+
     height: 22px;
     min-width: 100px;
+
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 7px;
+
     padding: 0 10px;
+
     border-radius: 4px;
+
     background: #111;
+
     font-family: "DM Mono", monospace;
     font-size: 8px;
     letter-spacing: 0.1em;
+
     color: #a8ff72;
 }
 
 .display-light {
     width: 5px;
     height: 5px;
+
     border-radius: 50%;
+
     background: #a8ff72;
-    box-shadow: 0 0 8px #a8ff72;
+
+    box-shadow:
+        0 0 8px #a8ff72;
 }
 
 .machine-body {
     position: absolute;
+
     left: 0;
     right: 0;
     top: 39px;
     bottom: 0;
+
     border-radius: 8px 8px 15px 15px;
+
     background:
         linear-gradient(
             90deg,
@@ -361,7 +441,9 @@ button {
             #303030 50%,
             #1d1d1d
         );
+
     border: 1px solid rgba(255,255,255,0.07);
+
     box-shadow:
         inset 0 2px 0 rgba(255,255,255,0.05),
         0 20px 40px rgba(0,0,0,0.35);
@@ -369,10 +451,13 @@ button {
 
 .machine-panel {
     position: absolute;
+
     left: 25px;
     top: 30px;
+
     width: 120px;
     height: 125px;
+
     border-right: 1px solid rgba(255,255,255,0.07);
 }
 
@@ -384,15 +469,21 @@ button {
 .machine-button {
     width: 12px;
     height: 12px;
+
     padding: 0;
     border: 0;
+
     border-radius: 50%;
+
     background: #555;
-    box-shadow: inset 0 1px 2px rgba(255,255,255,0.2);
+
+    box-shadow:
+        inset 0 1px 2px rgba(255,255,255,0.2);
 }
 
 .machine-button.active {
     background: #a8ff72;
+
     box-shadow:
         0 0 10px rgba(168,255,114,0.6),
         inset 0 1px 2px rgba(255,255,255,0.3);
@@ -406,75 +497,102 @@ button {
 
 .gauge {
     position: relative;
+
     width: 60px;
     height: 60px;
+
     border-radius: 50%;
     border: 4px solid #4a4a4a;
+
     background: #191919;
 }
 
 .gauge::before {
     content: "";
+
     position: absolute;
     inset: 7px;
+
     border-radius: 50%;
+
     border: 1px solid #666;
 }
 
 .gauge-needle {
     position: absolute;
+
     left: 28px;
     top: 13px;
+
     width: 2px;
     height: 18px;
+
     background: #ddd;
+
     transform-origin: bottom center;
     transform: rotate(-40deg);
 }
 
 .gauge span {
     position: absolute;
+
     left: 50%;
     bottom: 7px;
+
     transform: translateX(-50%);
+
     font-family: "DM Mono", monospace;
     font-size: 6px;
+
     color: #777;
 }
 
 .group-head {
     position: absolute;
+
     right: 67px;
     top: 44px;
+
     width: 155px;
     height: 75px;
 }
 
 .group-handle {
     position: absolute;
+
     width: 115px;
     height: 13px;
+
     top: -29px;
     left: 17px;
+
     border-radius: 10px;
+
     background: #161616;
+
     transform: rotate(-5deg);
 }
 
 .group-head-metal {
     position: absolute;
+
     left: 20px;
     top: 0;
+
     width: 105px;
     height: 43px;
+
     border-radius: 50%;
+
     background:
         linear-gradient(
             180deg,
             #d1d1d1,
             #777
         );
+
     border: 3px solid #4a4a4a;
+
     box-shadow:
         inset 0 -6px 8px rgba(0,0,0,0.25),
         0 8px 10px rgba(0,0,0,0.3);
@@ -482,21 +600,30 @@ button {
 
 .group-screen {
     position: absolute;
+
     left: 29px;
     top: 12px;
+
     width: 42px;
     height: 15px;
+
     border-radius: 50%;
+
     background: #282828;
+
     border: 2px solid #555;
 }
 
 .spout {
     position: absolute;
+
     top: 35px;
+
     width: 8px;
     height: 17px;
+
     border-radius: 0 0 8px 8px;
+
     background: #555;
 }
 
@@ -510,18 +637,28 @@ button {
 
 .espresso-stream {
     position: absolute;
+
     top: 92px;
+
     width: 5px;
     height: 0;
+
     opacity: 0;
+
     border-radius: 999px;
+
     background:
         linear-gradient(
             180deg,
             #b76531,
             #4b2414
         );
-    filter: drop-shadow(0 2px 3px rgba(0,0,0,0.3));
+
+    filter:
+        drop-shadow(
+            0 2px 3px rgba(0,0,0,0.3)
+        );
+
     transform-origin: top center;
 }
 
@@ -535,34 +672,48 @@ button {
 
 .machine-base {
     position: absolute;
+
     left: -10px;
     right: -10px;
     bottom: -9px;
+
     height: 12px;
+
     border-radius: 10px;
+
     background: #161616;
 }
 
-/* -------------------------------------------------- */
-/* Cup */
-/* -------------------------------------------------- */
+
+/* ==================================================
+   CUP
+================================================== */
 
 .cup-zone {
     position: absolute;
+
     left: 57%;
     bottom: 48px;
+
     width: 130px;
     height: 160px;
-    z-index: 8;
+
+    z-index: 50;
+
+    pointer-events: none;
 }
 
 .cup {
     position: absolute;
+
     left: 50%;
     bottom: 10px;
+
     width: 92px;
     height: 105px;
+
     transform: translateX(-50%);
+
     transition:
         transform 0.25s ease,
         opacity 0.2s ease;
@@ -570,25 +721,34 @@ button {
 
 .cup-top {
     position: absolute;
+
     top: 0;
     left: 0;
+
     width: 92px;
     height: 27px;
+
     border-radius: 50%;
+
     background:
         linear-gradient(
             180deg,
             #ded5c6,
             #a99d8a
         );
+
     border: 4px solid #766b5e;
+
     z-index: 3;
 }
 
 .coffee-surface {
     position: absolute;
+
     inset: 4px;
+
     border-radius: 50%;
+
     background:
         radial-gradient(
             circle at 45% 35%,
@@ -596,17 +756,24 @@ button {
             #633019 55%,
             #33180d 100%
         );
+
     transform: scale(0);
-    transition: transform 0.8s ease;
+
+    transition:
+        transform 0.8s ease;
 }
 
 .cup-body {
     position: absolute;
+
     top: 12px;
     left: 7px;
+
     width: 78px;
     height: 88px;
+
     border-radius: 5px 5px 18px 18px;
+
     background:
         linear-gradient(
             90deg,
@@ -614,6 +781,7 @@ button {
             #f0e7da 50%,
             #c2b4a2
         );
+
     box-shadow:
         inset -7px 0 12px rgba(0,0,0,0.08),
         0 15px 20px rgba(0,0,0,0.25);
@@ -621,85 +789,124 @@ button {
 
 .cup-logo {
     position: absolute;
+
     top: 38px;
     left: 50%;
+
     transform: translateX(-50%);
+
     font-family: "DM Mono", monospace;
+
     font-size: 9px;
     letter-spacing: 0.18em;
+
     color: #4a3c2f;
 }
 
 .cup-shadow {
     position: absolute;
+
     left: 50%;
     bottom: -8px;
+
     width: 115px;
     height: 14px;
+
     transform: translateX(-50%);
+
     border-radius: 50%;
+
     background: rgba(0,0,0,0.35);
+
     filter: blur(5px);
 }
 
-/* -------------------------------------------------- */
-/* Barista */
-/* -------------------------------------------------- */
+
+/* ==================================================
+   BARISTA
+================================================== */
 
 .barista {
     position: absolute;
+
     right: 2%;
     bottom: 46px;
+
     width: 180px;
     height: 290px;
-    z-index: 4;
+
+    z-index: 60;
+
     transform-origin: bottom center;
-    animation: baristaBreathing 3s ease-in-out infinite;
+
+    animation:
+        baristaBreathing
+        3s ease-in-out infinite;
+
     transition:
         transform 0.35s ease,
-        right 0.4s ease;
+        right 0.4s ease,
+        opacity 0.4s ease;
 }
 
 .barista-head {
     position: absolute;
+
     left: 45px;
     top: 20px;
+
     width: 82px;
     height: 92px;
+
     z-index: 3;
 }
 
 .face {
     position: absolute;
+
     left: 5px;
     top: 8px;
+
     width: 72px;
     height: 80px;
+
     border-radius: 47% 47% 45% 45%;
+
     background: #b97950;
-    box-shadow: inset -8px -5px 15px rgba(80,35,20,0.14);
+
+    box-shadow:
+        inset -8px -5px 15px rgba(80,35,20,0.14);
 }
 
 .hair {
     position: absolute;
+
     left: 3px;
     top: 0;
+
     width: 78px;
     height: 38px;
+
     z-index: 5;
+
     border-radius: 45px 45px 20px 20px;
+
     background: #1e1613;
+
     transform: rotate(-3deg);
 }
 
 .eye {
     position: absolute;
+
     top: 38px;
+
     width: 7px;
     height: 7px;
+
     border-radius: 50%;
+
     background: #241710;
-    transition: transform 0.2s ease;
 }
 
 .eye.left {
@@ -712,30 +919,43 @@ button {
 
 .nose {
     position: absolute;
+
     left: 34px;
     top: 43px;
+
     width: 5px;
     height: 11px;
+
     border-radius: 50%;
+
     background: rgba(86,39,24,0.25);
 }
 
 .mouth {
     position: absolute;
+
     left: 28px;
     top: 63px;
+
     width: 17px;
     height: 5px;
+
     border-bottom: 2px solid #4b241a;
-    border-radius: 0 0 50% 50%;
+
+    border-radius:
+        0 0 50% 50%;
 }
 
 .ear {
     position: absolute;
+
     top: 40px;
+
     width: 10px;
     height: 18px;
+
     border-radius: 50%;
+
     background: #ae6d49;
 }
 
@@ -749,16 +969,21 @@ button {
 
 .barista-body {
     position: absolute;
+
     left: 25px;
     top: 105px;
+
     width: 135px;
     height: 185px;
 }
 
 .shirt {
     position: absolute;
+
     inset: 0;
+
     border-radius: 35px 35px 0 0;
+
     background:
         linear-gradient(
             90deg,
@@ -770,11 +995,15 @@ button {
 
 .apron {
     position: absolute;
+
     left: 31px;
     top: 0;
+
     width: 73px;
     height: 185px;
+
     border-radius: 20px 20px 0 0;
+
     background:
         linear-gradient(
             90deg,
@@ -786,15 +1015,23 @@ button {
 
 .arm {
     position: absolute;
+
     top: 124px;
+
     width: 25px;
     height: 112px;
+
     border-radius: 20px;
+
     background: #d0d0ca;
+
     z-index: 1;
+
     transform-origin: top center;
+
     transition:
-        transform 0.4s cubic-bezier(.2,.8,.2,1);
+        transform 0.4s
+        cubic-bezier(.2,.8,.2,1);
 }
 
 .arm-left {
@@ -809,13 +1046,19 @@ button {
 
 .hand {
     position: absolute;
+
     width: 28px;
     height: 28px;
+
     border-radius: 50%;
+
     background: #b97950;
+
     z-index: 2;
+
     transition:
-        transform 0.45s cubic-bezier(.2,.8,.2,1);
+        transform 0.45s
+        cubic-bezier(.2,.8,.2,1);
 }
 
 .hand-left {
@@ -828,56 +1071,80 @@ button {
     top: 222px;
 }
 
-/* -------------------------------------------------- */
-/* Coffee splash */
-/* -------------------------------------------------- */
+
+/* ==================================================
+   COFFEE SPLASH
+================================================== */
 
 .coffee-splash {
     position: absolute;
+
     left: 50%;
     top: 54%;
+
     width: 20px;
     height: 20px;
-    transform: translate(-50%, -50%);
+
+    transform:
+        translate(-50%, -50%);
+
     pointer-events: none;
+
     opacity: 0;
-    z-index: 20;
+
+    z-index: 80;
 }
 
 .coffee-splash span {
     position: absolute;
+
     left: 50%;
     top: 50%;
+
     width: 13px;
     height: 13px;
+
     border-radius: 50%;
+
     background: #8b4b29;
-    transform: translate(-50%, -50%);
+
+    transform:
+        translate(-50%, -50%);
 }
 
-/* -------------------------------------------------- */
-/* Flowers */
-/* -------------------------------------------------- */
+
+/* ==================================================
+   FLOWERS
+================================================== */
 
 .flower-delivery {
     position: absolute;
+
     left: 50%;
     top: -40px;
+
     width: 500px;
     height: 430px;
-    z-index: 50;
+
+    z-index: 100;
+
     pointer-events: none;
+
     opacity: 0;
+
     transform:
         translate(-50%, 100px)
         scale(0.6);
+
     transition:
         opacity 0.2s ease,
-        transform 0.6s cubic-bezier(.16,1,.3,1);
+        transform 0.6s
+        cubic-bezier(.16,1,.3,1);
 }
 
 .flower-delivery.show {
     opacity: 1;
+
     transform:
         translate(-50%, -20px)
         scale(1);
@@ -885,26 +1152,37 @@ button {
 
 .bouquet {
     position: absolute;
+
     left: 50%;
     bottom: 30px;
+
     width: 300px;
     height: 300px;
-    transform: translateX(-50%);
+
+    transform:
+        translateX(-50%);
 }
 
 .bouquet-paper {
     position: absolute;
+
     left: 50%;
     bottom: 0;
+
     width: 160px;
     height: 190px;
-    transform: translateX(-50%);
-    clip-path: polygon(
-        15% 0,
-        85% 0,
-        100% 100%,
-        0 100%
-    );
+
+    transform:
+        translateX(-50%);
+
+    clip-path:
+        polygon(
+            15% 0,
+            85% 0,
+            100% 100%,
+            0 100%
+        );
+
     background:
         linear-gradient(
             90deg,
@@ -912,13 +1190,17 @@ button {
             #efe0c6,
             #c8af90
         );
-    box-shadow: 0 15px 25px rgba(0,0,0,0.25);
+
+    box-shadow:
+        0 15px 25px rgba(0,0,0,0.25);
 }
 
 .flower {
     position: absolute;
+
     width: 74px;
     height: 74px;
+
     z-index: 3;
 }
 
@@ -930,228 +1212,381 @@ button {
 .flower-b {
     left: 40px;
     top: 92px;
-    transform: scale(0.9);
+
+    transform:
+        scale(0.9);
 }
 
 .flower-c {
     right: 42px;
     top: 96px;
-    transform: scale(1.05);
+
+    transform:
+        scale(1.05);
 }
 
 .flower-d {
     left: 110px;
     top: 125px;
-    transform: scale(0.72);
+
+    transform:
+        scale(0.72);
 }
 
 .petal {
     position: absolute;
+
     left: 50%;
     top: 50%;
+
     width: 30px;
     height: 42px;
+
     border-radius: 50%;
+
     background:
         radial-gradient(
             circle at 40% 35%,
             #fff0f4,
             #ef8fa4
         );
-    transform-origin: 50% 100%;
+
+    transform-origin:
+        50% 100%;
 }
 
 .p1 {
-    transform: translate(-50%, -100%) rotate(0deg);
+    transform:
+        translate(-50%, -100%)
+        rotate(0deg);
 }
 
 .p2 {
-    transform: translate(-50%, -100%) rotate(90deg);
+    transform:
+        translate(-50%, -100%)
+        rotate(90deg);
 }
 
 .p3 {
-    transform: translate(-50%, -100%) rotate(180deg);
+    transform:
+        translate(-50%, -100%)
+        rotate(180deg);
 }
 
 .p4 {
-    transform: translate(-50%, -100%) rotate(270deg);
+    transform:
+        translate(-50%, -100%)
+        rotate(270deg);
 }
 
 .flower-center {
     position: absolute;
+
     left: 50%;
     top: 50%;
+
     width: 18px;
     height: 18px;
-    transform: translate(-50%, -50%);
+
+    transform:
+        translate(-50%, -50%);
+
     border-radius: 50%;
+
     background: #f5bd51;
-    box-shadow: 0 0 0 4px rgba(245,189,81,0.18);
+
+    box-shadow:
+        0 0 0 4px rgba(245,189,81,0.18);
 }
 
 .flower-message {
     position: absolute;
+
     left: 50%;
     bottom: 8px;
-    transform: translateX(-50%);
+
+    transform:
+        translateX(-50%);
+
     padding: 12px 20px;
+
     border-radius: 999px;
-    background: rgba(16,13,10,0.85);
-    border: 1px solid rgba(255,255,255,0.1);
-    backdrop-filter: blur(10px);
-    font-family: "DM Mono", monospace;
+
+    background:
+        rgba(16,13,10,0.85);
+
+    border:
+        1px solid rgba(255,255,255,0.1);
+
+    backdrop-filter:
+        blur(10px);
+
+    font-family:
+        "DM Mono", monospace;
+
     font-size: 11px;
-    letter-spacing: 0.14em;
-    white-space: nowrap;
+
+    letter-spacing:
+        0.14em;
+
+    white-space:
+        nowrap;
 }
 
-/* -------------------------------------------------- */
-/* Top UI */
-/* -------------------------------------------------- */
+
+/* ==================================================
+   TOP UI
+================================================== */
 
 .top-ui {
     position: absolute;
+
     top: 28px;
     left: 35px;
     right: 35px;
+
     display: flex;
     align-items: center;
     justify-content: space-between;
-    z-index: 100;
+
+    z-index: 200;
 }
 
 .brand {
     display: flex;
     align-items: center;
+
     gap: 10px;
-    font-family: "DM Mono", monospace;
+
+    font-family:
+        "DM Mono", monospace;
+
     font-size: 10px;
-    letter-spacing: 0.14em;
-    color: rgba(244,234,216,0.65);
+
+    letter-spacing:
+        0.14em;
+
+    color:
+        rgba(244,234,216,0.65);
 }
 
 .brand-dot {
     width: 7px;
     height: 7px;
+
     border-radius: 50%;
-    background: #a8ff72;
-    box-shadow: 0 0 12px rgba(168,255,114,0.5);
+
+    background:
+        #a8ff72;
+
+    box-shadow:
+        0 0 12px
+        rgba(168,255,114,0.5);
 }
 
 .status-pill {
     display: flex;
     align-items: center;
+
     gap: 8px;
-    padding: 8px 12px;
+
+    padding:
+        8px 12px;
+
     border-radius: 999px;
-    background: rgba(0,0,0,0.18);
-    border: 1px solid rgba(255,255,255,0.06);
-    backdrop-filter: blur(8px);
-    font-family: "DM Mono", monospace;
+
+    background:
+        rgba(0,0,0,0.18);
+
+    border:
+        1px solid
+        rgba(255,255,255,0.06);
+
+    backdrop-filter:
+        blur(8px);
+
+    font-family:
+        "DM Mono", monospace;
+
     font-size: 8px;
-    letter-spacing: 0.1em;
-    color: rgba(244,234,216,0.48);
+
+    letter-spacing:
+        0.1em;
+
+    color:
+        rgba(244,234,216,0.48);
 }
 
 .status-pill span {
     width: 5px;
     height: 5px;
+
     border-radius: 50%;
-    background: #a8ff72;
+
+    background:
+        #a8ff72;
 }
 
-/* -------------------------------------------------- */
-/* Hero UI */
-/* -------------------------------------------------- */
+
+/* ==================================================
+   HERO
+================================================== */
 
 .hero-ui {
     position: absolute;
+
     left: 7%;
     top: 19%;
-    z-index: 90;
+
+    z-index: 210;
+
     max-width: 350px;
 }
 
 .eyebrow {
     margin-bottom: 13px;
-    font-family: "DM Mono", monospace;
+
+    font-family:
+        "DM Mono", monospace;
+
     font-size: 9px;
-    letter-spacing: 0.2em;
-    color: rgba(244,234,216,0.38);
+
+    letter-spacing:
+        0.2em;
+
+    color:
+        rgba(244,234,216,0.38);
 }
 
 .hero-ui h1 {
     margin: 0;
-    font-size: clamp(42px, 5vw, 70px);
-    line-height: 0.92;
-    letter-spacing: -0.055em;
-    font-weight: 800;
+
+    font-size:
+        clamp(42px, 5vw, 70px);
+
+    line-height:
+        0.92;
+
+    letter-spacing:
+        -0.055em;
+
+    font-weight:
+        800;
 }
 
 .hero-ui p {
-    margin: 20px 0 25px;
-    max-width: 240px;
-    font-size: 13px;
-    line-height: 1.6;
-    color: rgba(244,234,216,0.45);
+    margin:
+        20px 0 25px;
+
+    max-width:
+        240px;
+
+    font-size:
+        13px;
+
+    line-height:
+        1.6;
+
+    color:
+        rgba(244,234,216,0.45);
 }
 
 .make-button {
     display: flex;
     align-items: center;
+
     gap: 13px;
+
     height: 54px;
-    padding: 0 17px;
+
+    padding:
+        0 17px;
+
     border: 0;
+
     border-radius: 10px;
-    background: var(--accent);
-    color: #15130f;
-    cursor: pointer;
-    font-weight: 800;
-    font-size: 12px;
-    letter-spacing: 0.04em;
+
+    background:
+        var(--accent);
+
+    color:
+        #15130f;
+
+    cursor:
+        pointer;
+
+    font-weight:
+        800;
+
+    font-size:
+        12px;
+
+    letter-spacing:
+        0.04em;
+
     box-shadow:
-        0 12px 30px rgba(216,255,88,0.12);
+        0 12px 30px
+        rgba(216,255,88,0.12);
+
     transition:
         transform 0.15s ease,
         box-shadow 0.15s ease;
 }
 
 .make-button:hover {
-    transform: translateY(-2px);
+    transform:
+        translateY(-2px);
+
     box-shadow:
-        0 16px 35px rgba(216,255,88,0.18);
+        0 16px 35px
+        rgba(216,255,88,0.18);
 }
 
 .make-button:active {
-    transform: translateY(1px);
+    transform:
+        translateY(1px);
 }
 
 .button-icon {
-    font-size: 16px;
+    font-size:
+        16px;
 }
 
 .button-arrow {
-    margin-left: 15px;
-    font-size: 18px;
+    margin-left:
+        15px;
+
+    font-size:
+        18px;
 }
 
-/* -------------------------------------------------- */
-/* Failure message */
-/* -------------------------------------------------- */
+
+/* ==================================================
+   FAILURE MESSAGE
+================================================== */
 
 .failure-message {
     position: absolute;
+
     left: 50%;
     top: 22%;
-    z-index: 110;
+
+    z-index: 220;
+
     width: 300px;
+
     transform:
         translate(-50%, 20px)
         scale(0.96);
+
     opacity: 0;
-    pointer-events: none;
-    text-align: center;
+
+    pointer-events:
+        none;
+
+    text-align:
+        center;
+
     transition:
         opacity 0.35s ease,
         transform 0.35s ease;
@@ -1159,6 +1594,7 @@ button {
 
 .failure-message.show {
     opacity: 1;
+
     transform:
         translate(-50%, 0)
         scale(1);
@@ -1166,59 +1602,102 @@ button {
 
 .failure-tag {
     display: inline-block;
-    margin-bottom: 12px;
-    padding: 6px 9px;
-    border-radius: 4px;
-    background: rgba(255,105,95,0.1);
-    border: 1px solid rgba(255,105,95,0.2);
-    color: #ff8b84;
-    font-family: "DM Mono", monospace;
-    font-size: 8px;
-    letter-spacing: 0.14em;
+
+    margin-bottom:
+        12px;
+
+    padding:
+        6px 9px;
+
+    border-radius:
+        4px;
+
+    background:
+        rgba(255,105,95,0.1);
+
+    border:
+        1px solid
+        rgba(255,105,95,0.2);
+
+    color:
+        #ff8b84;
+
+    font-family:
+        "DM Mono", monospace;
+
+    font-size:
+        8px;
+
+    letter-spacing:
+        0.14em;
 }
 
 .failure-message h2 {
     margin: 0;
-    font-size: 34px;
-    line-height: 0.98;
-    letter-spacing: -0.04em;
+
+    font-size:
+        34px;
+
+    line-height:
+        0.98;
+
+    letter-spacing:
+        -0.04em;
 }
 
 .failure-message p {
-    margin-top: 13px;
-    font-size: 12px;
-    color: rgba(244,234,216,0.45);
+    margin-top:
+        13px;
+
+    font-size:
+        12px;
+
+    color:
+        rgba(244,234,216,0.45);
 }
 
-/* -------------------------------------------------- */
-/* Flash */
-/* -------------------------------------------------- */
+
+/* ==================================================
+   FLASH
+================================================== */
 
 .screen-flash {
     position: absolute;
+
     inset: 0;
-    z-index: 120;
-    background: rgba(255, 230, 195, 0.35);
+
+    z-index: 250;
+
+    background:
+        rgba(255,230,195,0.35);
+
     opacity: 0;
-    pointer-events: none;
+
+    pointer-events:
+        none;
 }
 
-/* -------------------------------------------------- */
-/* Animations */
-/* -------------------------------------------------- */
+
+/* ==================================================
+   ANIMATIONS
+================================================== */
 
 @keyframes baristaBreathing {
+
     0%,
     100% {
-        transform: translateY(0);
+        transform:
+            translateY(0);
     }
 
     50% {
-        transform: translateY(-4px);
+        transform:
+            translateY(-4px);
     }
 }
 
 @keyframes streamFlow {
+
     0% {
         height: 0;
         opacity: 0;
@@ -1235,8 +1714,10 @@ button {
 }
 
 @keyframes splash {
+
     0% {
         opacity: 1;
+
         transform:
             translate(-50%, -50%)
             scale(0.3);
@@ -1244,6 +1725,7 @@ button {
 
     100% {
         opacity: 0;
+
         transform:
             translate(
                 calc(-50% + var(--x)),
@@ -1254,41 +1736,54 @@ button {
 }
 
 @keyframes machineShake {
+
     0%,
     100% {
-        transform: translateX(0);
+        transform:
+            translateX(0);
     }
 
     20% {
-        transform: translateX(-6px) rotate(-0.6deg);
+        transform:
+            translateX(-6px)
+            rotate(-0.6deg);
     }
 
     40% {
-        transform: translateX(6px) rotate(0.6deg);
+        transform:
+            translateX(6px)
+            rotate(0.6deg);
     }
 
     60% {
-        transform: translateX(-4px);
+        transform:
+            translateX(-4px);
     }
 
     80% {
-        transform: translateX(4px);
+        transform:
+            translateX(4px);
     }
 }
 
 @keyframes handsOnHeadLeft {
+
     to {
-        transform: rotate(55deg);
+        transform:
+            rotate(55deg);
     }
 }
 
 @keyframes handsOnHeadRight {
+
     to {
-        transform: rotate(-55deg);
+        transform:
+            rotate(-55deg);
     }
 }
 
 @keyframes handHeadLeft {
+
     to {
         transform:
             translate(46px, -105px)
@@ -1297,6 +1792,7 @@ button {
 }
 
 @keyframes handHeadRight {
+
     to {
         transform:
             translate(-46px, -105px)
@@ -1304,65 +1800,123 @@ button {
     }
 }
 
-.scene.brewing .espresso-machine {
-    animation: machineShake 0.25s ease-in-out infinite;
+
+/* ==================================================
+   STATES
+================================================== */
+
+.scene.brewing
+.espresso-machine {
+    animation:
+        machineShake
+        0.25s
+        ease-in-out
+        infinite;
 }
 
-.scene.brewing .stream-left,
-.scene.brewing .stream-right {
-    animation: streamFlow 2.8s ease-in forwards;
+.scene.brewing
+.stream-left,
+.scene.brewing
+.stream-right {
+    animation:
+        streamFlow
+        2.8s
+        ease-in
+        forwards;
 }
 
-.scene.brewing .coffee-surface {
-    transform: scale(1);
+.scene.brewing
+.coffee-surface {
+    transform:
+        scale(1);
 }
 
-.scene.failed .barista {
-    animation: none;
+.scene.failed
+.barista {
+    animation:
+        none;
 }
 
-.scene.failed .arm-left {
-    animation: handsOnHeadLeft 0.45s cubic-bezier(.2,.8,.2,1) forwards;
+.scene.failed
+.arm-left {
+    animation:
+        handsOnHeadLeft
+        0.45s
+        cubic-bezier(.2,.8,.2,1)
+        forwards;
 }
 
-.scene.failed .arm-right {
-    animation: handsOnHeadRight 0.45s cubic-bezier(.2,.8,.2,1) forwards;
+.scene.failed
+.arm-right {
+    animation:
+        handsOnHeadRight
+        0.45s
+        cubic-bezier(.2,.8,.2,1)
+        forwards;
 }
 
-.scene.failed .hand-left {
-    animation: handHeadLeft 0.45s cubic-bezier(.2,.8,.2,1) forwards;
+.scene.failed
+.hand-left {
+    animation:
+        handHeadLeft
+        0.45s
+        cubic-bezier(.2,.8,.2,1)
+        forwards;
 }
 
-.scene.failed .hand-right {
-    animation: handHeadRight 0.45s cubic-bezier(.2,.8,.2,1) forwards;
+.scene.failed
+.hand-right {
+    animation:
+        handHeadRight
+        0.45s
+        cubic-bezier(.2,.8,.2,1)
+        forwards;
 }
 
-.scene.exploded .cup {
-    opacity: 0;
+.scene.exploded
+.cup {
+    opacity:
+        0;
+
     transform:
         translateX(-50%)
         scale(0.65)
         rotate(-12deg);
 }
 
-.scene.exploded .coffee-splash {
-    opacity: 1;
+.scene.exploded
+.coffee-splash {
+    opacity:
+        1;
 }
 
 .scene.shake {
-    animation: machineShake 0.32s ease-in-out;
+    animation:
+        machineShake
+        0.32s
+        ease-in-out;
 }
 
-.scene.flower-mode .barista {
+.scene.flower-mode
+.barista {
     transform:
         translateX(-280px)
         scale(0.9);
-    opacity: 0;
+
+    opacity:
+        0;
 }
 
-/* -------------------------------------------------- */
-/* Responsive */
-/* -------------------------------------------------- */
+.scene.flower-mode
+.flower-delivery {
+    pointer-events:
+        auto;
+}
+
+
+/* ==================================================
+   RESPONSIVE
+================================================== */
 
 @media (max-width: 850px) {
 
@@ -1373,86 +1927,134 @@ button {
     }
 
     .hero-ui h1 {
-        font-size: 46px;
+        font-size:
+            46px;
     }
 
     .espresso-machine {
         left: 1%;
-        width: 360px;
-        transform: scale(0.88);
-        transform-origin: bottom left;
+
+        width:
+            360px;
+
+        transform:
+            scale(0.88);
+
+        transform-origin:
+            bottom left;
     }
 
     .barista {
-        right: -4%;
-        transform: scale(0.82);
-        transform-origin: bottom right;
+        right:
+            -4%;
+
+        transform:
+            scale(0.82);
+
+        transform-origin:
+            bottom right;
     }
 
     .cup-zone {
-        left: 57%;
-        transform: scale(0.9);
-        transform-origin: bottom center;
+        left:
+            57%;
+
+        transform:
+            scale(0.9);
+
+        transform-origin:
+            bottom center;
     }
 
     .menu-board {
-        display: none;
+        display:
+            none;
     }
 
     .failure-message {
-        top: 15%;
+        top:
+            15%;
     }
 }
+
 
 @media (max-width: 600px) {
 
     .top-ui {
-        top: 18px;
-        left: 18px;
-        right: 18px;
+        top:
+            18px;
+
+        left:
+            18px;
+
+        right:
+            18px;
     }
 
     .status-pill {
-        display: none;
+        display:
+            none;
     }
 
     .hero-ui {
-        left: 6%;
-        top: 14%;
+        left:
+            6%;
+
+        top:
+            14%;
     }
 
     .hero-ui h1 {
-        font-size: 38px;
+        font-size:
+            38px;
     }
 
     .hero-ui p {
-        margin: 14px 0 18px;
+        margin:
+            14px 0 18px;
     }
 
     .make-button {
-        height: 48px;
+        height:
+            48px;
     }
 
     .machine-area {
-        width: 700px;
-        left: 48%;
+        width:
+            700px;
+
+        left:
+            48%;
     }
 
     .espresso-machine {
-        left: 0;
-        transform: scale(0.72);
-        transform-origin: bottom left;
+        left:
+            0;
+
+        transform:
+            scale(0.72);
+
+        transform-origin:
+            bottom left;
     }
 
     .cup-zone {
-        left: 51%;
-        transform: scale(0.72);
+        left:
+            51%;
+
+        transform:
+            scale(0.72);
     }
 
     .barista {
-        right: -5%;
-        transform: scale(0.68);
-        transform-origin: bottom right;
+        right:
+            -5%;
+
+        transform:
+            scale(0.68);
+
+        transform-origin:
+            bottom right;
     }
 
     .flower-delivery {
