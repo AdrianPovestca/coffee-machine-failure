@@ -8,8 +8,10 @@ const rnd = (a, b) => a + Math.random() * (b - a);
 const V = (x, y, z) => new THREE.Vector3(x, y, z);
 
 /* ---------- renderer ---------- */
-const renderer = new THREE.WebGLRenderer({ canvas: $('#gl'), antialias: true });
-renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+const renderer = new THREE.WebGLRenderer({ canvas: $('#gl'), antialias: true, powerPreference: 'high-performance' });
+let dpr = Math.min(devicePixelRatio, 1.5);
+{ const px = innerWidth * innerHeight; if (px * dpr * dpr > 2.6e6) dpr = Math.max(1, Math.sqrt(2.6e6 / px)); }
+renderer.setPixelRatio(dpr);
 renderer.shadowMap.enabled = true;
 renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 renderer.toneMapping = THREE.ACESFilmicToneMapping;
@@ -48,7 +50,7 @@ const skin = M(0xc48a66, 0.6);
 const shirt = M(0xeee9df, 0.85);
 const apronM = M(0x2b2521, 0.9);
 const kraft = M(0xb9976a, 0.9, 0, { side: THREE.DoubleSide });
-const glassM = new THREE.MeshPhysicalMaterial({ color: 0xffffff, transmission: 1, thickness: 0.04, roughness: 0.03, ior: 1.45, side: THREE.DoubleSide, envMapIntensity: 1.6 });
+const glassM = new THREE.MeshPhysicalMaterial({ color: 0xdff0f2, transparent: true, opacity: 0.22, roughness: 0.02, clearcoat: 1, clearcoatRoughness: 0.03, side: THREE.DoubleSide, depthWrite: false, envMapIntensity: 2.2 });
 const shardM = new THREE.MeshPhysicalMaterial({ color: 0xdff4f6, transparent: true, opacity: 0.55, roughness: 0.04, envMapIntensity: 2.2 });
 const coffeeM = M(0x3a1307, 0.12, 0, { emissive: 0x1a0803 });
 
@@ -76,13 +78,13 @@ for (let i = 0; i < 6; i++) { const l = mesh(plant, sph(0.1), M(0x4f6b3a, 0.6), 
   mesh(scene, cyl(0.03, 0.03, 2), dark, x, 4.6, -0.5);
   mesh(scene, cyl(0.08, 0.45, 0.4), M(0x1b1410, 0.4, 0.5), x, 3.5, -0.5);
   mesh(scene, sph(0.14), M(0xffe0b0, 0.3, 0, { emissive: 0xffc888, emissiveIntensity: 4 }), x, 3.4, -0.5);
-  const pl = new THREE.PointLight(0xffc888, 45, 12); pl.position.set(x, 3.2, 0.3); scene.add(pl);
+  if (x < 0) { const pl = new THREE.PointLight(0xffc888, 70, 12); pl.position.set(0, 3.2, 0.3); scene.add(pl); }
 });
 
 /* ---------- lights ---------- */
 const key = new THREE.SpotLight(0xffd7a8, 480, 0, 0.55, 0.7, 2);
 key.position.set(3.5, 7, 6.5); key.target.position.set(-0.8, 0.3, 0); key.castShadow = true;
-key.shadow.mapSize.set(2048, 2048); key.shadow.bias = -0.0002; key.shadow.normalBias = 0.02; key.shadow.camera.near = 3; key.shadow.camera.far = 30;
+key.shadow.mapSize.set(1024, 1024); key.shadow.bias = -0.0002; key.shadow.normalBias = 0.02; key.shadow.camera.near = 3; key.shadow.camera.far = 30;
 scene.add(key, key.target);
 const rim = new THREE.SpotLight(0xffa868, 260, 0, 0.7, 0.8, 2); rim.position.set(-6, 5, -3); rim.target.position.set(-1, 1, 0); scene.add(rim, rim.target);
 scene.add(new THREE.HemisphereLight(0xffe2c0, 0x1a0f08, 0.25));
@@ -113,7 +115,7 @@ mesh(machine, new THREE.PlaneGeometry(1, 0.25), new THREE.MeshBasicMaterial({
 const CUP = V(-2.6, 0.13, 0.48), SPOUT_Y = 0.68;
 const cupG = new THREE.Group(); cupG.position.copy(CUP); scene.add(cupG);
 const glass = new THREE.Mesh(new THREE.LatheGeometry([[0.001, 0], [0.15, 0], [0.165, 0.02], [0.185, 0.4], [0.175, 0.4], [0.155, 0.05], [0.001, 0.05]].map(p => new THREE.Vector2(...p)), 48), glassM);
-glass.castShadow = true; cupG.add(glass);
+glass.castShadow = false; cupG.add(glass);
 const handle = new THREE.Mesh(new THREE.TorusGeometry(0.09, 0.014, 12, 24, Math.PI), glassM); handle.position.set(0.18, 0.24, 0); handle.rotation.z = -Math.PI / 2; cupG.add(handle);
 const coffee = mesh(cupG, cyl(0.17, 0.156, 0.35, 40).translate(0, 0.175, 0), coffeeM, 0, 0.05, 0); coffee.scale.y = 0.001;
 const crema = mesh(cupG, cyl(0.168, 0.168, 0.012, 40), M(0xb9763c, 0.4, 0, { emissive: 0x2a1204 }), 0, 0.05, 0);
@@ -163,14 +165,14 @@ const arms = [1, -1].map(s => {
   mesh(up, cap(0.14, A), shirt, 0, 0, A / 2); mesh(lo, cap(0.12, A), skin, 0, 0, A / 2); mesh(lo, sph(0.16), skin, 0, 0, A + 0.02);
   return { s, up, lo };
 });
+const _S = V(0, 0, 0), _T = V(0, 0, 0), _v = V(0, 0, 0), _p = V(0, 0, 0), _E = V(0, 0, 0), _H = V(0, 0, 0);
 function ik({ s, up, lo }, target, poleY) {
-  const S = root.localToWorld(V(s * 0.55, 2.5, 0)), T = root.localToWorld(target.clone());
-  const v = T.sub(S); const d = Math.min(v.length(), 2 * A * 0.999); v.normalize();
-  const pole = V(s, poleY, -0.5).transformDirection(root.matrixWorld);
-  const perp = pole.sub(v.clone().multiplyScalar(pole.dot(v))).normalize();
+  _S.set(s * 0.55, 2.5, 0).applyMatrix4(root.matrixWorld); _T.copy(target).applyMatrix4(root.matrixWorld);
+  _v.subVectors(_T, _S); const d = Math.min(_v.length(), 2 * A * 0.999); _v.normalize();
+  _p.set(s, poleY, -0.5).transformDirection(root.matrixWorld); _p.addScaledVector(_v, -_p.dot(_v)).normalize();
   const ca = d / (2 * A), sa = Math.sqrt(1 - ca * ca);
-  const E = S.clone().addScaledVector(v, A * ca).addScaledVector(perp, A * sa);
-  up.position.copy(S); up.lookAt(E); lo.position.copy(E); lo.lookAt(S.clone().addScaledVector(v, d));
+  _E.copy(_S).addScaledVector(_v, A * ca).addScaledVector(_p, A * sa); _H.copy(_S).addScaledVector(_v, d);
+  up.position.copy(_S); up.lookAt(_E); lo.position.copy(_E); lo.lookAt(_H);
 }
 
 /* ---------- bouquet ---------- */
@@ -194,7 +196,7 @@ mesh(bouquet, new THREE.PlaneGeometry(0.44, 0.24), new THREE.MeshStandardMateria
 }), 0, 0.02, 0.36).rotation.x = -0.15;
 
 /* ---------- state & timeline ---------- */
-let t0 = null, last = 0, shattered = false, puddleT = 0, shakeT = -9;
+let t0 = null, last = 0, shattered = false, puddleT = 0, shakeT = -9, fpsAcc = 0, fpsN = 0, needs = true, frozen = false;
 const ui = { status: $('#status'), msg: $('#msg'), btn: $('#go'), label: $('#label'), fail: $('#fail'), foryou: $('#foryou'), flash: $('#flash'), hero: $('#hero') };
 const steps = [
   [0, 'PULLING SHOTS', 'Please wait...'], [2.45, 'PRESSURE ERROR', 'Something feels... wrong.'],
@@ -227,7 +229,16 @@ const lookAt = V(0, 0, 0);
 function frame(now) {
   requestAnimationFrame(frame);
   window.__ok = true;
-  const dt = Math.min((now - last) / 1000, 0.05); last = now;
+  const raw = (now - last) / 1000, dt = Math.min(raw, 0.05); last = now;
+  if (raw < 0.5) {
+    fpsAcc += raw; fpsN++;
+    if (fpsAcc > 1.2) {
+      if (fpsN / fpsAcc < 50 && dpr > 1) { dpr = Math.max(1, dpr - 0.25); renderer.setPixelRatio(dpr); renderer.setSize(innerWidth, innerHeight); }
+      fpsAcc = 0; fpsN = 0;
+    }
+  }
+  if (t0 === null ? !needs : frozen) return;
+  needs = false;
   const go = t0 !== null, t = go ? (now - t0) / 1000 : -1;
   const sec = now / 1000;
 
@@ -273,7 +284,7 @@ function frame(now) {
   steam.forEach(s => {
     const i = s.userData.i, k = (sec * 0.35 + i / steam.length) % 1, wand = i % 2;
     s.position.set((wand ? -0.75 : CUP.x + 0.05) + Math.sin(sec + i) * 0.06, (wand ? 0.9 : 0.72) + k * 0.7, wand ? 0.42 : CUP.z);
-    s.scale.setScalar(0.25 + k * 0.4); s.material.opacity = Math.sin(k * Math.PI) * (go ? 0.16 : 0.05);
+    s.scale.setScalar(0.25 + k * 0.4); s.material.opacity = Math.sin(k * Math.PI) * (go ? 0.16 : 0);
   });
 
   /* barista */
@@ -286,7 +297,7 @@ function frame(now) {
       if (t < 6.2) { const u = 1 - Math.pow(1 - (t - 5.2), 2); ry = -1.57; px = 8 - 7.2 * u; pz = 3.2; run = 1; }
       else { const v = seg(t, 6.2, 7.8); ry = -1.57 * (1 - v); px = 0.8 - 1.4 * v; pz = 3.2 + 2.4 * v; run = 1 - seg(t, 7.3, 7.8); }
     } else if (t > 3.0) py += Math.sin(clamp((t - 3.0) / 0.4) * Math.PI) * 0.25;
-  } else py += Math.sin(sec * 1.6) * 0.008;
+  }
   const ph = sec * 13;
   py += Math.abs(Math.sin(ph)) * 0.08 * run;
   root.position.set(px, py, pz); root.rotation.set(-0.12 * panic, ry, 0); root.updateMatrixWorld(true);
@@ -302,27 +313,33 @@ function frame(now) {
 
   /* camera */
   const cs = go ? seg(t, 5.0, 7.6) : 0, push = go ? seg(t, 0.3, 2.8) * 0.5 : 0;
-  cam.position.lerpVectors(camA.p, camB.p, cs); cam.position.z -= push; cam.position.x += Math.sin(sec * 0.3) * 0.08;
+  cam.position.lerpVectors(camA.p, camB.p, cs); cam.position.z -= push;
   lookAt.lerpVectors(camA.l, camB.l, cs);
   const sk = go ? Math.exp(-(t - shakeT) * 6) * 0.15 * (t > shakeT ? 1 : 0) : 0;
-  cam.position.x += Math.sin(sec * 90) * sk; cam.position.y += Math.cos(sec * 77) * sk;
+  cam.position.x += Math.sin(sec * 34) * sk; cam.position.y += Math.cos(sec * 29) * sk;
   cam.lookAt(lookAt);
   renderer.render(scene, cam);
+  if (go && t > 9.2) frozen = true;
 }
 
 /* ---------- controls ---------- */
 function start() {
   if (t0 !== null && ui.btn.disabled) return;
-  resetAll(); t0 = performance.now(); ui.btn.disabled = true; ui.label.textContent = 'BREWING...';
+  resetAll(); frozen = false; t0 = performance.now(); ui.btn.disabled = true; ui.label.textContent = 'BREWING...';
 }
 ui.btn.addEventListener('click', start);
 addEventListener('keydown', e => {
   if (e.key === 'Enter' && !ui.btn.disabled) start();
-  if (e.key.toLowerCase() === 'r') { t0 = null; resetAll(); ui.btn.disabled = false; ui.label.textContent = 'MAKE COFFEE'; cupG.position.copy(CUP); }
+  if (e.key.toLowerCase() === 'r') { t0 = null; needs = true; frozen = false; resetAll(); ui.btn.disabled = false; ui.label.textContent = 'MAKE COFFEE'; cupG.position.copy(CUP); }
 });
 function resize() {
   const w = innerWidth, h = innerHeight; renderer.setSize(w, h); cam.aspect = w / h;
-  cam.fov = cam.aspect < 1 ? 62 : cam.aspect < 1.4 ? 42 : 32; cam.updateProjectionMatrix();
+  cam.fov = cam.aspect < 1 ? 62 : cam.aspect < 1.4 ? 42 : 32; cam.updateProjectionMatrix(); needs = true;
 }
 addEventListener('resize', resize); resize();
+scene.traverse(o => { o.frustumCulled = false; });
+[cupG, bouquet, puddle, ...shards, ...drops].forEach(o => { o.visible = true; });
+cam.position.copy(camA.p); cam.lookAt(camA.l);
+renderer.compile(scene, cam); renderer.render(scene, cam);
+resetAll();
 requestAnimationFrame(frame);
