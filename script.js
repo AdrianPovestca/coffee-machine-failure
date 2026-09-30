@@ -2,125 +2,138 @@ const scene = document.getElementById("scene");
 
 const makeCoffee = document.getElementById("makeCoffee");
 
-const cup = document.getElementById("cup");
+const coffeeSplash =
+    document.getElementById("coffeeSplash");
 
-const coffeeSplash = document.getElementById("coffeeSplash");
+const flowerDelivery =
+    document.getElementById("flowerDelivery");
 
-const barista = document.getElementById("barista");
+const failureMessage =
+    document.getElementById("failureMessage");
 
-const flowerDelivery = document.getElementById("flowerDelivery");
+const screenFlash =
+    document.getElementById("screenFlash");
 
-const failureMessage = document.getElementById("failureMessage");
+const machineStatus =
+    document.getElementById("machineStatus");
 
-const screenFlash = document.getElementById("screenFlash");
+const statusText =
+    document.getElementById("statusText");
 
-const machineStatus = document.getElementById("machineStatus");
-
-const statusText = document.getElementById("statusText");
-
-const instruction = document.getElementById("instruction");
+const instruction =
+    document.getElementById("instruction");
 
 
 let isRunning = false;
 
 
-/* -------------------------------------------------- */
-/* Coffee splash */
-/* -------------------------------------------------- */
+/* ==================================================
+   WAIT
+================================================== */
+
+function wait(milliseconds) {
+
+    return new Promise(resolve => {
+
+        setTimeout(
+            resolve,
+            milliseconds
+        );
+
+    });
+
+}
+
+
+/* ==================================================
+   COFFEE SPLASH
+================================================== */
 
 function createSplash() {
 
-    const particles = coffeeSplash.querySelectorAll("span");
+    const particles =
+        coffeeSplash.querySelectorAll("span");
 
     const positions = [
+
         ["-95px", "-75px"],
         ["75px", "-90px"],
         ["-120px", "15px"],
         ["115px", "30px"],
         ["-65px", "75px"],
         ["70px", "85px"]
+
     ];
 
-    particles.forEach((particle, index) => {
 
-        const [x, y] = positions[index];
+    particles.forEach(
+        (particle, index) => {
 
-        particle.style.setProperty("--x", x);
-        particle.style.setProperty("--y", y);
+            const [x, y] =
+                positions[index];
 
-        particle.style.animation = "none";
+            particle.style.setProperty(
+                "--x",
+                x
+            );
 
-        void particle.offsetWidth;
-
-        particle.style.animation =
-            "splash 0.65s cubic-bezier(.2,.8,.2,1) forwards";
-
-    });
-}
+            particle.style.setProperty(
+                "--y",
+                y
+            );
 
 
-/* -------------------------------------------------- */
-/* Screen flash */
-/* -------------------------------------------------- */
+            particle.style.animation =
+                "none";
 
-function flashScreen() {
 
-    screenFlash.animate(
-        [
-            {
-                opacity: 0
-            },
-            {
-                opacity: 1
-            },
-            {
-                opacity: 0
-            }
-        ],
-        {
-            duration: 300,
-            easing: "ease-out"
+            void particle.offsetWidth;
+
+
+            particle.style.animation =
+                "splash 0.65s cubic-bezier(.2,.8,.2,1) forwards";
+
         }
     );
 
 }
 
 
-/* -------------------------------------------------- */
-/* Reset */
-/* -------------------------------------------------- */
+/* ==================================================
+   FLASH
+================================================== */
 
-function resetScene() {
+function flashScreen() {
 
-    scene.classList.remove(
-        "brewing",
-        "failed",
-        "exploded",
-        "shake",
-        "flower-mode"
+    screenFlash.animate(
+
+        [
+            {
+                opacity: 0
+            },
+
+            {
+                opacity: 1
+            },
+
+            {
+                opacity: 0
+            }
+        ],
+
+        {
+            duration: 300,
+            easing: "ease-out"
+        }
+
     );
-
-    flowerDelivery.classList.remove("show");
-
-    failureMessage.classList.remove("show");
-
-    machineStatus.textContent = "READY";
-
-    statusText.textContent = "SYSTEM READY";
-
-    instruction.textContent =
-        "One perfectly normal espresso.";
-
-    makeCoffee.disabled = false;
-
-    makeCoffee.style.opacity = "1";
 
 }
 
 
-/* -------------------------------------------------- */
-/* Main sequence */
-/* -------------------------------------------------- */
+/* ==================================================
+   MAIN SEQUENCE
+================================================== */
 
 async function makeCoffeeSequence() {
 
@@ -128,84 +141,131 @@ async function makeCoffeeSequence() {
         return;
     }
 
+
     isRunning = true;
 
-    makeCoffee.disabled = true;
 
-    makeCoffee.style.opacity = "0.5";
+    makeCoffee.disabled =
+        true;
+
+    makeCoffee.style.opacity =
+        "0.5";
 
 
-    /* ---------------------------------------------- */
-    /* 1. Brewing starts */
-    /* ---------------------------------------------- */
+    /* ----------------------------------------------
+       1. BREWING
+    ---------------------------------------------- */
 
-    scene.classList.add("brewing");
+    scene.classList.add(
+        "brewing"
+    );
 
-    machineStatus.textContent = "BREWING";
 
-    statusText.textContent = "PULLING SHOTS";
+    machineStatus.textContent =
+        "BREWING";
+
+
+    statusText.textContent =
+        "PULLING SHOTS";
+
 
     instruction.textContent =
         "Please wait...";
 
+
     await wait(2900);
 
 
-    /* ---------------------------------------------- */
-    /* 2. Something goes horribly wrong */
-    /* ---------------------------------------------- */
+    /* ----------------------------------------------
+       2. FAILURE
+    ---------------------------------------------- */
 
-    scene.classList.remove("brewing");
+    scene.classList.remove(
+        "brewing"
+    );
 
-    scene.classList.add("shake");
 
-    machineStatus.textContent = "ERROR";
+    scene.classList.add(
+        "shake"
+    );
 
-    statusText.textContent = "SYSTEM FAILURE";
+
+    machineStatus.textContent =
+        "ERROR";
+
+
+    statusText.textContent =
+        "SYSTEM FAILURE";
+
 
     instruction.textContent =
         "Oh.";
 
+
     flashScreen();
+
 
     createSplash();
 
-    scene.classList.add("exploded");
+
+    scene.classList.add(
+        "exploded"
+    );
+
 
     await wait(300);
 
 
-    /* ---------------------------------------------- */
-    /* 3. Barista reaction */
-    /* ---------------------------------------------- */
+    /* ----------------------------------------------
+       3. BARISTA REACTION
+    ---------------------------------------------- */
 
-    scene.classList.add("failed");
+    scene.classList.add(
+        "failed"
+    );
 
-    failureMessage.classList.add("show");
+
+    failureMessage.classList.add(
+        "show"
+    );
+
 
     await wait(1150);
 
 
-    /* ---------------------------------------------- */
-    /* 4. Barista runs away */
-    /* ---------------------------------------------- */
+    /* ----------------------------------------------
+       4. BARISTA LEAVES
+    ---------------------------------------------- */
 
-    failureMessage.classList.remove("show");
+    failureMessage.classList.remove(
+        "show"
+    );
 
-    scene.classList.add("flower-mode");
+
+    scene.classList.add(
+        "flower-mode"
+    );
+
 
     await wait(550);
 
 
-    /* ---------------------------------------------- */
-    /* 5. FLOWERS */
-    /* ---------------------------------------------- */
+    /* ----------------------------------------------
+       5. FLOWERS
+    ---------------------------------------------- */
 
-    flowerDelivery.classList.add("show");
+    flowerDelivery.classList.add(
+        "show"
+    );
 
-    statusText.textContent = "ALTERNATIVE SOLUTION";
 
-    machineStatus.textContent = "FLOWERS";
+    statusText.textContent =
+        "ALTERNATIVE SOLUTION";
+
+
+    machineStatus.textContent =
+        "FLOWERS";
+
 
     instruction.textContent =
         "This is for you.";
@@ -213,9 +273,9 @@ async function makeCoffeeSequence() {
 }
 
 
-/* -------------------------------------------------- */
-/* Button */
-/* -------------------------------------------------- */
+/* ==================================================
+   BUTTON
+================================================== */
 
 makeCoffee.addEventListener(
     "click",
@@ -223,22 +283,9 @@ makeCoffee.addEventListener(
 );
 
 
-/* -------------------------------------------------- */
-/* Wait helper */
-/* -------------------------------------------------- */
-
-function wait(milliseconds) {
-
-    return new Promise(
-        resolve => setTimeout(resolve, milliseconds)
-    );
-
-}
-
-
-/* -------------------------------------------------- */
-/* Keyboard shortcut */
-/* -------------------------------------------------- */
+/* ==================================================
+   SPACEBAR
+================================================== */
 
 document.addEventListener(
     "keydown",
